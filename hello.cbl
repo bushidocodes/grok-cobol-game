@@ -108,4 +108,4 @@ GAME-LOOP.
     IF FUNCTION MOD(TURNS-LEFT, 4) = 0
         SUBTRACT 8 FROM APPROVAL
         MOVE "Breaking: Scandal rocks administration! Approval hit." TO EVENT-TEXT
-    END-IF
+    END-IF.
