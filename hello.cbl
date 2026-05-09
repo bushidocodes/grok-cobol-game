@@ -50,13 +50,31 @@ SCREEN SECTION.
 
    05 LINE 24 COL 1 PIC X(80) VALUE ALL "=" FOREGROUND-COLOR 1.
 
+01 GAME-OVER-SCREEN.
+   05 BLANK SCREEN BACKGROUND-COLOR 0 FOREGROUND-COLOR 4.
+   05 LINE 4 COL 15 VALUE "==========================================".
+   05 LINE 6 COL 25 VALUE "  GAME OVER  " HIGHLIGHT.
+   05 LINE 8 COL 15 VALUE "   ANGRY MOB RIOTS!   " HIGHLIGHT.
+   05 LINE 10 COL 20 VALUE "  o   o   o   o  ".
+   05 LINE 11 COL 20 VALUE " /|\\ /|\\ /|\\ /|\\ ".
+   05 LINE 12 COL 20 VALUE " / \\ / \\ / \\ / \\ ".
+   05 LINE 14 COL 10 VALUE "Your approval hit ZERO. The citizens revolt!".
+   05 LINE 16 COL 15 VALUE "==========================================".
+   05 LINE 19 COL 20 VALUE "Press ENTER to exit...".
+
 PROCEDURE DIVISION.
 MAIN-LOGIC.
     DISPLAY "Enter your name, waste slayer: " WITH NO ADVANCING
     ACCEPT PLAYER-NAME
     MOVE "Welcome! Balance bold action with public support." TO EVENT-TEXT
 
-    PERFORM GAME-LOOP UNTIL CONTINUE-FLAG = 'N' OR TURNS-LEFT = 0 OR APPROVAL < 20
+    PERFORM GAME-LOOP UNTIL CONTINUE-FLAG = 'N' OR TURNS-LEFT = 0 OR APPROVAL <= 0
+
+    IF APPROVAL <= 0
+        DISPLAY GAME-OVER-SCREEN
+        ACCEPT OMITTED
+        STOP RUN
+    END-IF
 
     IF WASTE-CUT >= 1000000000 AND APPROVAL >= 50
         DISPLAY "VICTORY! You slashed $" WASTE-CUT " with strong approval. Hero of the people!"
@@ -105,6 +123,11 @@ GAME-LOOP.
     END-EVALUATE
     IF APPROVAL > 100 MOVE 100 TO APPROVAL END-IF
     IF APPROVAL < 0 MOVE 0 TO APPROVAL END-IF
+    IF APPROVAL <= 0
+        DISPLAY GAME-OVER-SCREEN
+        ACCEPT OMITTED
+        STOP RUN
+    END-IF
     IF FUNCTION MOD(TURNS-LEFT, 4) = 0
         SUBTRACT 8 FROM APPROVAL
         MOVE "Breaking: Scandal rocks administration! Approval hit." TO EVENT-TEXT
