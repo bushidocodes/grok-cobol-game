@@ -41,9 +41,9 @@ sudo apt install gnucobol make
    sudo apt update && sudo apt install gnucobol make
    ```
 
-**Option 2 (Masochism):** Use MSYS2/MinGW.
-- Download from msys2.org, install, then `pacman -S mingw-w64-x86_64-gnucobol make`.
-- Good luck. We won't judge... much.
+**Option 2 (Vanilla Windows - Slightly Less Painful):** 
+- GNUCobol: Download the SuperBOL bundle from https://superbol.eu/developers/windows/
+- Make: `winget install GnuWin32.Make`
 
 **Option 3:** Just install Linux. Seriously.
 
